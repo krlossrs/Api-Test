@@ -89,7 +89,7 @@ namespace Api_Test.Controllers
         }
 
         [HttpPost("filter")]
-        public async Task<ActionResult<IEnumerable<Student>>> GetStudentsByFilter(VmFindStudents vmFilter)
+        public async Task<ActionResult<IEnumerable<string>>> GetStudentsByFilter(VmFindStudents vmFilter)
         {
             if (_context.Students == null)
             {
@@ -110,7 +110,7 @@ namespace Api_Test.Controllers
             if (vmFilter.AcademicYear > 0)
                 predicate = vmFilter.isAcademicYearAnd ? predicate.And(e => e.AcademicYear == vmFilter.AcademicYear) : predicate.Or(e => e.AcademicYear == vmFilter.AcademicYear);
 
-            return await _context.Students.Where(predicate).ToListAsync();
+            return await _context.Students.Where(predicate).Select(s => s.Name).ToListAsync();
         }
 
         // GET: api/Students/5
